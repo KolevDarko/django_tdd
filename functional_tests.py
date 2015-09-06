@@ -32,16 +32,20 @@ class NewVisitorTest(unittest.TestCase):
 
         table = self.browser.find_element_by_id('id_list_table')
         rows = table.find_elements_by_tag_name('tr')
-        self.assertTrue(
-                any(row.text == '1: Buy peacock feathers' for row in rows),
-                "Item not found in table rows"
-                )
+        self.assertIn('1: Buy peacock feathers', [row.text for row in rows])
 #There is still a box if she wants to add another item
-        self.fail('Finish the test mfr')
+        inputbox = self.browser.find_element_by_id('id_new_item')
+        inputbox.send_keys('Use peacock feather to make a fly')
+        inputbox.send_keys(Keys.ENTER)
+
 #The page updates again and shows both items
-
+        table = self.browser.find_element_by_id('id_list_table')
+        rows = table.find_elements_by_tag_name('tr')
+        self.assertIn('1: Buy peacock feathers', [row.text for row in rows])
+        self.assertIn('2: User peacocks to make a fly', [row.text for row in rows])
+        
 #Then a url is generated for her
-
+        self.fail('Finish the test lion')
 #And then she quites the page
 if __name__ == '__main__':
     unittest.main(warnings='ignore')
