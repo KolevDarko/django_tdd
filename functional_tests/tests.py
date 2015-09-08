@@ -33,8 +33,9 @@ class NewVisitorTest(LiveServerTestCase):
 
     # she types "Buy peacock feathers" into a text box and hits enter
         inputbox.send_keys("Buy peacock feathers")
-    # then the page updates and her text is on the page
         inputbox.send_keys(Keys.ENTER)
+
+    # then the page updates and her text is on the page
         edith_list_url = self.browser.current_url
         self.assertRegex(edith_list_url, '/lists/.+')
         self.check_for_row_in_list_table('1: Buy peacock feathers')
