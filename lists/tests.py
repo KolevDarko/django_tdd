@@ -84,7 +84,7 @@ class ListViewTest(TestCase):
 
         response = self.client.get('/lists/%d/' % (my_list.id))
 
-        self.assertEquals(response.context['list'], str(my_list.id))
+        self.assertEquals(response.context['list'].id, my_list.id)
 
 
 class NewListTest(TestCase):
@@ -114,7 +114,7 @@ class NewItemTest(TestCase):
         list_ = List.objects.create()
         Item.objects.create(text="basdf", list=list_)
         response = self.client.post(
-            '/lists/%d/add_item/' % (list_.id),
+            '/lists/%d/add_item' % (list_.id),
             data={'item_text': 'Item list in old list'}
         )
         item = Item.objects.first()
@@ -122,11 +122,11 @@ class NewItemTest(TestCase):
         self.assertEqual(item.list, list_)
         self.assertRedirects(response, '/lists/%d/' % (list_.id))
 
-        def test_redirects_to_list_view(self):
-            other_list = List.objects.create()
-            correct_list = List.objects.create()
-            response = self.client.post(
-                '/lists/%d/add_item' % (correct_list.id,),
-                data={'item_text': 'A new item for an existing list'}
-            )
-            self.assertRedirects(response, '/lists/%d/' % (correct_list.id,))
+    def test_redirects_to_list_view(self):
+        List.objects.create()
+        correct_list = List.objects.create()
+        response = self.client.post(
+            '/lists/%d/add_item' % (correct_list.id,),
+            data={'item_text': 'A new item for an existing list'}
+        )
+        self.assertRedirects(response, '/lists/%d/' % (correct_list.id,))
