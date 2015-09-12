@@ -18,6 +18,11 @@
                             class="form-control input-lg" 
                             />
                             {% csrf_token %}
+                            {% if error %}
+                                <div class="has-error form-group">
+                                    <span class="help-block">{{ error }}</span>
+                                </div>
+                            {% endif %}
                         </form>
 
                 </div>
