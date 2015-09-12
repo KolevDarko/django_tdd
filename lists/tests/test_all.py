@@ -107,6 +107,15 @@ class NewListTest(TestCase):
         last_list = List.objects.first()
         self.assertRedirects(response, '/lists/%d/' % (last_list.id))
 
+    def test_throws_error_on_empty_item(self):
+        response = self.client.post(
+            '/lists/new',
+            data={'item_text': ''}
+        )
+        self.assertEquals(response.context['errors'],
+                          'Cannot submit empty item')
+        self.assertTemplateUsed(response, 'home.html')
+
 
 class NewItemTest(TestCase):
 
