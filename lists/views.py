@@ -5,10 +5,6 @@ from .models import Item, List
 
 
 def home_page(request):
-    if request.method == 'POST':
-        Item.objects.create(text=request.POST['new_item_text'])
-        return redirect('/lists/the-only-list')
-
     return render(request, 'home.html')
 
 
@@ -20,7 +16,7 @@ def view_list(request, list_id):
             item = Item(text=request.POST['item_text'], list=list_)
             item.full_clean()
             item.save()
-            return redirect('/lists/%d/' % (list_.id))
+            return redirect(list_)
         except ValidationError:
             error = 'Cannot have empty list item'
     return render(request, 'list.html', {'list': list_, 'error': error})
@@ -36,4 +32,4 @@ def new_list(request):
         list_.delete()
         return render(request, 'home.html', {'error':
                       'Cannot have empty list item'})
-    return redirect('/lists/%d/' % (list_.id))
+    return redirect(list_)
