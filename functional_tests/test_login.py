@@ -3,20 +3,15 @@ import time
 from .base import FunctionalTest
 
 from selenium.webdriver.support.ui import WebDriverWait
-
+TEST_EMAIL = 'darko@mockmyid.com'
 
 class LoginTest(FunctionalTest):
-
-    def wait_for_element_with_id(self, element_id):\
-        WebDriverWait(self.browser, timeout=30).until(
-            lambda b: b.find_element_by_id(element_id)
-        )
 
     def switch_to_new_window(self, title):
         retries = 60
         while retries > 0:
             for handle in self.browser.window_handles:
-                self.browser.switch_to_window(handle)
+                self.browser.switch_to.window(handle)
                 if title in self.browser.title:
                     return
             retries = -1
@@ -42,6 +37,18 @@ class LoginTest(FunctionalTest):
         self.switch_to_new_window('To-Do')
 
         # She can see that she is logged in
-        self.wait_for_element_with_id('id_logout')
-        navbar = self.browser.find_element_by_css_selector('.navbar')
-        self.assertIn('darko@mockmyid.com', navbar.text)
+        self.wait_to_be_logged_in(TEST_EMAIL)
+
+#        Refreshing the page, she sees  it's a real session login,
+#        not just a one of for that page
+        self.browser.refresh()
+        self.wait_to_be_logged_in(TEST_EMAIL)
+
+#       Then she clicks log out
+        self.browser.find_element_by_id('id_logout').click()
+        self.wait_to_be_logged_out(TEST_EMAIL)
+#
+#       The logged out status also persists after refresh
+        self.browser.refresh()
+        self.wait_to_be_logged_out(TEST_EMAIL)
+
