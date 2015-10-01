@@ -15,7 +15,7 @@ import os
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-
+DOMAIN = 'localhost'
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.8/howto/deployment/checklist/
 
@@ -25,7 +25,7 @@ SECRET_KEY = '14apt(e)g=1e7%^dyh0@1taye#$du)7s!iemz)lzs338t1+95h'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [DOMAIN]
 
 
 # Application definition
